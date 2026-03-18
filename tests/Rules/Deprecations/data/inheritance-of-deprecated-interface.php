@@ -1,25 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace InheritanceOfDeprecatedInterface;
 
 interface Foo extends Fooable
 {
-
 }
 
 interface Foo2 extends DeprecatedFooable
 {
-
 }
 
 interface Foo3 extends Fooable, DeprecatedFooable, DeprecatedFooable2
 {
-
 }
 
 interface Foo4 extends DeprecatedWithDescription
 {
-
 }
 
 /**
@@ -27,7 +25,6 @@ interface Foo4 extends DeprecatedWithDescription
  */
 interface DeprecatedFoo extends Fooable
 {
-
 }
 
 /**
@@ -35,7 +32,6 @@ interface DeprecatedFoo extends Fooable
  */
 interface DeprecatedFoo2 extends DeprecatedFooable
 {
-
 }
 
 /**
@@ -43,5 +39,4 @@ interface DeprecatedFoo2 extends DeprecatedFooable
  */
 interface DeprecatedFoo3 extends Fooable, DeprecatedFooable, DeprecatedFooable2
 {
-
 }

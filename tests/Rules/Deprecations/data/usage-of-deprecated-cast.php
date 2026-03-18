@@ -1,20 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UsageOfDeprecatedCast;
 
 class Foo
 {
-	/**
-	 * @deprecated
-	 */
-	public function __toString()
-	{
-		return 'foo';
-	}
+    /**
+     * @deprecated
+     */
+    public function __toString()
+    {
+        return 'foo';
+    }
 }
 
-function foo(Foo $foo): string {
-	return (string) $foo;
+function foo(Foo $foo): string
+{
+    return (string) $foo;
 }
 
 /**
@@ -22,9 +25,10 @@ function foo(Foo $foo): string {
  */
 function deprecatedScope(Foo $foo): string
 {
-	return (string) $foo;
+    return (string) $foo;
 }
 
-function foo2(Foo $foo): string {
-	return (int) $foo;
+function foo2(Foo $foo): string
+{
+    return (int) $foo;
 }

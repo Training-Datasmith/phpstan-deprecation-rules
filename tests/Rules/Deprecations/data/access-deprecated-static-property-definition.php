@@ -1,32 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AccessDeprecatedStaticProperty;
 
-trait FooTrait {
+trait FooTrait
+{
+    public static $fooFromTrait;
 
-	public static $fooFromTrait;
-
-	/**
-	 * @deprecated
-	 */
-	public static $deprecatedFooFromTrait;
+    /**
+     * @deprecated
+     */
+    public static $deprecatedFooFromTrait;
 
 }
 
-class Foo {
+class Foo
+{
+    use FooTrait;
 
-	use FooTrait;
+    public static $foo;
 
-	public static $foo;
+    /**
+     * @deprecated
+     */
+    public static $deprecatedFoo;
 
-	/**
-	 * @deprecated
-	 */
-	public static $deprecatedFoo;
-
-	/**
-	 * @deprecated This is probably a singleton.
-	 */
-	public static $deprecatedWithDescription;
+    /**
+     * @deprecated This is probably a singleton.
+     */
+    public static $deprecatedWithDescription;
 
 }

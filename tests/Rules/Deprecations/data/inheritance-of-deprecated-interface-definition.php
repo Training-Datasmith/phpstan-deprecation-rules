@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace InheritanceOfDeprecatedInterface;
 
 interface Fooable
 {
-
 }
 
 /**
@@ -12,7 +13,6 @@ interface Fooable
  */
 interface DeprecatedFooable
 {
-
 }
 
 /**
@@ -20,7 +20,6 @@ interface DeprecatedFooable
  */
 interface DeprecatedFooable2
 {
-
 }
 
 /**
@@ -28,5 +27,4 @@ interface DeprecatedFooable2
  */
 interface DeprecatedWithDescription
 {
-
 }

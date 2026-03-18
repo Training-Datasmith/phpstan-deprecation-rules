@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CheckDeprecatedFunctionCall;
 
 foo();
@@ -14,8 +16,8 @@ deprecated_with_description();
  */
 function deprecated_scope()
 {
-	deprecated_foo();
-	\CheckDeprecatedFunctionCall\deprecated_foo();
+    deprecated_foo();
+    \CheckDeprecatedFunctionCall\deprecated_foo();
 }
 
 /**
@@ -23,11 +25,10 @@ function deprecated_scope()
  */
 class DeprecatedScope
 {
-
-	function foo()
-	{
-		deprecated_foo();
-		\CheckDeprecatedFunctionCall\deprecated_foo();
-	}
+    public function foo()
+    {
+        deprecated_foo();
+        \CheckDeprecatedFunctionCall\deprecated_foo();
+    }
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace InstantiationOfDeprecatedClass;
 
 $foo = new Foo();
@@ -11,8 +13,8 @@ $deprecated2 = new DeprecatedWithDescription();
  */
 function deprecated_scope()
 {
-	$foo = new Foo();
-	$deprecatedFoo = new DeprecatedFoo();
+    $foo = new Foo();
+    $deprecatedFoo = new DeprecatedFoo();
 }
 
 /**
@@ -20,14 +22,13 @@ function deprecated_scope()
  */
 class DeprecatedScope
 {
-	public function foo()
-	{
-		$foo = new Foo();
-		$deprecatedFoo = new DeprecatedFoo();
-	}
+    public function foo()
+    {
+        $foo = new Foo();
+        $deprecatedFoo = new DeprecatedFoo();
+    }
 }
 
 // #1: `namespacedName` property doesn't exist in anonymous classes
-new class() extends Foo {
-
+new class () extends Foo {
 };

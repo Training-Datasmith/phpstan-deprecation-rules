@@ -1,17 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace InheritanceOfDeprecatedClass;
 
-$foo = new class extends Foo {
-
+$foo = new class () extends Foo {
 };
 
-$deprecatedFoo = new class extends DeprecatedFoo {
-
+$deprecatedFoo = new class () extends DeprecatedFoo {
 };
 
-$deprecatedBar = new class extends DeprecatedWithDescription {
-
+$deprecatedBar = new class () extends DeprecatedWithDescription {
 };
 
 /**
@@ -19,13 +18,11 @@ $deprecatedBar = new class extends DeprecatedWithDescription {
  */
 function deprecated_scope()
 {
-	$foo = new class extends Foo {
+    $foo = new class () extends Foo {
+    };
 
-	};
-
-	$deprecatedFoo = new class extends DeprecatedFoo {
-
-	};
+    $deprecatedFoo = new class () extends DeprecatedFoo {
+    };
 }
 
 /**
@@ -33,16 +30,13 @@ function deprecated_scope()
  */
 class DeprecatedScope
 {
+    public function foo()
+    {
+        $foo = new class () extends Foo {
+        };
 
-	public function foo()
-	{
-		$foo = new class extends Foo {
-
-		};
-
-		$deprecatedFoo = new class extends DeprecatedFoo {
-
-		};
-	}
+        $deprecatedFoo = new class () extends DeprecatedFoo {
+        };
+    }
 
 }

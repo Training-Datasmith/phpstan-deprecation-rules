@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace PHPStan\Rules\Deprecations;
 
@@ -11,34 +13,33 @@ use PHPStan\Testing\RuleTestCase;
  */
 class RestrictedDeprecatedClassNameUsageExtensionTest extends RuleTestCase
 {
+    protected function getRule(): Rule
+    {
+        return self::getContainer()->getByType(CallStaticMethodsRule::class);
+    }
 
-	protected function getRule(): Rule
-	{
-		return self::getContainer()->getByType(CallStaticMethodsRule::class);
-	}
+    public function testStaticMethodCallOnDeprecatedSubclass(): void
+    {
+        require_once __DIR__ . '/data/call-to-deprecated-static-method-definition.php';
 
-	public function testStaticMethodCallOnDeprecatedSubclass(): void
-	{
-		require_once __DIR__ . '/data/call-to-deprecated-static-method-definition.php';
+        $this->analyse([__DIR__ . '/data/call-to-deprecated-static-method.php'], [
+            [
+                'Call to static method foo() on deprecated class CheckDeprecatedStaticMethodCall\DeprecatedBar.',
+                11,
+            ],
+            [
+                "Call to static method foo() on deprecated class CheckDeprecatedStaticMethodCall\DeprecatedBaz:\nDo not touch this at all.",
+                15,
+            ],
+        ]);
+    }
 
-		$this->analyse([__DIR__ . '/data/call-to-deprecated-static-method.php'], [
-			[
-				'Call to static method foo() on deprecated class CheckDeprecatedStaticMethodCall\DeprecatedBar.',
-				11,
-			],
-			[
-				"Call to static method foo() on deprecated class CheckDeprecatedStaticMethodCall\DeprecatedBaz:\nDo not touch this at all.",
-				15,
-			],
-		]);
-	}
-
-	public static function getAdditionalConfigFiles(): array
-	{
-		return [
-			__DIR__ . '/../../../rules.neon',
-			...parent::getAdditionalConfigFiles(),
-		];
-	}
+    public static function getAdditionalConfigFiles(): array
+    {
+        return [
+            __DIR__ . '/../../../rules.neon',
+            ...parent::getAdditionalConfigFiles(),
+        ];
+    }
 
 }

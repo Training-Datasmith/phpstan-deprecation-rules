@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace InstantiationOfDeprecatedClass;
 
 class Foo
 {
-
 }
 
 /**
@@ -12,7 +13,6 @@ class Foo
  */
 class DeprecatedFoo
 {
-
 }
 
 /**
@@ -20,5 +20,4 @@ class DeprecatedFoo
  */
 class DeprecatedWithDescription
 {
-
 }

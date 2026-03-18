@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace PHPStan\Rules\Deprecations;
 
@@ -8,6 +10,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+
 use function sprintf;
 
 /**
@@ -15,44 +18,43 @@ use function sprintf;
  */
 class FetchingDeprecatedConstRule implements Rule
 {
+    private ReflectionProvider $reflectionProvider;
 
-	private ReflectionProvider $reflectionProvider;
+    private DeprecatedScopeHelper $deprecatedScopeHelper;
 
-	private DeprecatedScopeHelper $deprecatedScopeHelper;
+    public function __construct(ReflectionProvider $reflectionProvider, DeprecatedScopeHelper $deprecatedScopeHelper)
+    {
+        $this->reflectionProvider = $reflectionProvider;
+        $this->deprecatedScopeHelper = $deprecatedScopeHelper;
+    }
 
-	public function __construct(ReflectionProvider $reflectionProvider, DeprecatedScopeHelper $deprecatedScopeHelper)
-	{
-		$this->reflectionProvider = $reflectionProvider;
-		$this->deprecatedScopeHelper = $deprecatedScopeHelper;
-	}
+    public function getNodeType(): string
+    {
+        return ConstFetch::class;
+    }
 
-	public function getNodeType(): string
-	{
-		return ConstFetch::class;
-	}
+    public function processNode(Node $node, Scope $scope): array
+    {
+        if ($this->deprecatedScopeHelper->isScopeDeprecated($scope)) {
+            return [];
+        }
 
-	public function processNode(Node $node, Scope $scope): array
-	{
-		if ($this->deprecatedScopeHelper->isScopeDeprecated($scope)) {
-			return [];
-		}
+        if (!$this->reflectionProvider->hasConstant($node->name, $scope)) {
+            return [];
+        }
 
-		if (!$this->reflectionProvider->hasConstant($node->name, $scope)) {
-			return [];
-		}
+        $constantReflection = $this->reflectionProvider->getConstant($node->name, $scope);
 
-		$constantReflection = $this->reflectionProvider->getConstant($node->name, $scope);
+        if ($constantReflection->isDeprecated()->yes()) {
+            return [
+                RuleErrorBuilder::message(sprintf(
+                    $constantReflection->getDeprecatedDescription() ?? 'Use of constant %s is deprecated.',
+                    $constantReflection->getName(),
+                ))->identifier('constant.deprecated')->build(),
+            ];
+        }
 
-		if ($constantReflection->isDeprecated()->yes()) {
-			return [
-				RuleErrorBuilder::message(sprintf(
-					$constantReflection->getDeprecatedDescription() ?? 'Use of constant %s is deprecated.',
-					$constantReflection->getName(),
-				))->identifier('constant.deprecated')->build(),
-			];
-		}
-
-		return [];
-	}
+        return [];
+    }
 
 }

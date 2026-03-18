@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TypeHintDeprecatedInClassMethodSignature;
 
 class Foo
 {
-
     private $properties;
 
     /**
@@ -24,7 +25,7 @@ class Foo
             $property3,
             $property4,
             $property5,
-            $property6
+            $property6,
         ];
 
         return $property;
@@ -34,7 +35,6 @@ class Foo
 
 class FooImplOverride implements IThinkYoureStuck
 {
-
     /**
      * @param Property $property
      */
@@ -46,7 +46,6 @@ class FooImplOverride implements IThinkYoureStuck
 
 class FooImplNoOverride implements IThinkYoureStuck
 {
-
     public function oops($property): void
     {
     }
@@ -58,14 +57,13 @@ class FooImplNoOverride implements IThinkYoureStuck
  */
 class DeprecatedClass
 {
-
     public function bar(DeprecatedProperty $property)
     {
     }
 
 }
 
-new class {
+new class () {
     private $property;
 
     public function __construct(?DeprecatedProperty $property = null)

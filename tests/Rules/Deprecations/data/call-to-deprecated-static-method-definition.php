@@ -1,48 +1,48 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CheckDeprecatedStaticMethodCall;
 
 class Foo
 {
+    public static function foo()
+    {
 
-	public static function foo()
-	{
+    }
 
-	}
+    /**
+     * @deprecated
+     */
+    public static function deprecatedFoo()
+    {
 
-	/**
-	 * @deprecated
-	 */
-	public static function deprecatedFoo()
-	{
+    }
 
-	}
+    /**
+     * @deprecated
+     */
+    public static function deprecatedFoo2()
+    {
 
-	/**
-	 * @deprecated
-	 */
-	public static function deprecatedFoo2()
-	{
+    }
 
-	}
+    /**
+     * @deprecated This is probably a singleton.
+     */
+    public static function deprecatedWithDescription()
+    {
 
-	/**
-	 * @deprecated This is probably a singleton.
-	 */
-	public static function deprecatedWithDescription()
-	{
-
-	}
+    }
 
 }
 
 class Bar extends Foo
 {
+    public static function deprecatedFoo()
+    {
 
-	public static function deprecatedFoo()
-	{
-
-	}
+    }
 
 }
 
@@ -51,11 +51,10 @@ class Bar extends Foo
  */
 class DeprecatedBar extends Foo
 {
+    public static function doDeprecatedBar()
+    {
 
-	public static function doDeprecatedBar()
-	{
-		
-	}
+    }
 
 }
 
@@ -64,5 +63,4 @@ class DeprecatedBar extends Foo
  */
 class DeprecatedBaz extends Foo
 {
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TypeHintDeprecatedInClassMethodSignature;
 
 /**
@@ -7,7 +9,6 @@ namespace TypeHintDeprecatedInClassMethodSignature;
  */
 class DeprecatedProperty
 {
-
 }
 
 /**
@@ -15,7 +16,6 @@ class DeprecatedProperty
  */
 class VerboseDeprecatedProperty
 {
-
 }
 
 /**
@@ -23,17 +23,14 @@ class VerboseDeprecatedProperty
  */
 interface DeprecatedInterface
 {
-
 }
 
 class Property
 {
-
 }
 
 interface IThinkYoureStuck
 {
-
     /**
      * @param Property|DeprecatedProperty $property
      */

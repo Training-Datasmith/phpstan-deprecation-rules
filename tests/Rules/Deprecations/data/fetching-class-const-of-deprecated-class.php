@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FetchingClassConstOfDeprecatedClass;
 
 Foo::class;
@@ -18,8 +20,8 @@ DeprecatedBar::FOO;
  */
 function deprecated_scope()
 {
-	Foo::class;
-	DeprecatedFoo::class;
+    Foo::class;
+    DeprecatedFoo::class;
 }
 
 /**
@@ -27,11 +29,10 @@ function deprecated_scope()
  */
 class DeprecatedScope
 {
-
-	function foo()
-	{
-		Foo::class;
-		DeprecatedFoo::class;
-	}
+    public function foo()
+    {
+        Foo::class;
+        DeprecatedFoo::class;
+    }
 
 }

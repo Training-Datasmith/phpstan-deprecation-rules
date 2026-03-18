@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TypeHintDeprecatedInFunctionSignature;
 
 /**
@@ -7,7 +9,6 @@ namespace TypeHintDeprecatedInFunctionSignature;
  */
 class DeprecatedProperty
 {
-
 }
 
 /**
@@ -15,7 +16,6 @@ class DeprecatedProperty
  */
 class VerboseDeprecatedProperty
 {
-
 }
 
 /**
@@ -23,10 +23,8 @@ class VerboseDeprecatedProperty
  */
 interface DeprecatedInterface
 {
-
 }
 
 class Property
 {
-
 }

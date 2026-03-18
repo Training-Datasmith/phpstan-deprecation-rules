@@ -1,21 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ImplementationOfDeprecatedInterface;
 
-$fooable = new class implements Fooable {
-
+$fooable = new class () implements Fooable {
 };
 
-$fooable2 = new class implements DeprecatedFooable {
-
+$fooable2 = new class () implements DeprecatedFooable {
 };
 
-$fooable3 = new class implements Fooable, DeprecatedFooable, DeprecatedFooable2 {
-
+$fooable3 = new class () implements Fooable, DeprecatedFooable, DeprecatedFooable2 {
 };
 
-$fooable4 = new class implements DeprecatedWithDescription {
-
+$fooable4 = new class () implements DeprecatedWithDescription {
 };
 
 /**
@@ -23,17 +21,14 @@ $fooable4 = new class implements DeprecatedWithDescription {
  */
 function deprecated_scope()
 {
-	$fooable = new class implements Fooable {
+    $fooable = new class () implements Fooable {
+    };
 
-	};
+    $fooable2 = new class () implements DeprecatedFooable {
+    };
 
-	$fooable2 = new class implements DeprecatedFooable {
-
-	};
-
-	$fooable3 = new class implements Fooable, DeprecatedFooable, DeprecatedFooable2 {
-
-	};
+    $fooable3 = new class () implements Fooable, DeprecatedFooable, DeprecatedFooable2 {
+    };
 }
 
 /**
@@ -41,20 +36,16 @@ function deprecated_scope()
  */
 class DeprecatedScope
 {
+    public function foo()
+    {
+        $fooable = new class () implements Fooable {
+        };
 
-	public function foo()
-	{
-		$fooable = new class implements Fooable {
+        $fooable2 = new class () implements DeprecatedFooable {
+        };
 
-		};
-
-		$fooable2 = new class implements DeprecatedFooable {
-
-		};
-
-		$fooable3 = new class implements Fooable, DeprecatedFooable, DeprecatedFooable2 {
-
-		};
-	}
+        $fooable3 = new class () implements Fooable, DeprecatedFooable, DeprecatedFooable2 {
+        };
+    }
 
 }

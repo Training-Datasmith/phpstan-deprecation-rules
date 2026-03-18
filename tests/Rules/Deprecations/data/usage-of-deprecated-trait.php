@@ -1,27 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UsageOfDeprecatedTrait;
 
 class Foo
 {
-
-	use FooTrait;
-	use DeprecatedFooTrait;
+    use FooTrait;
+    use DeprecatedFooTrait;
 
 }
 
 class Foo2
 {
+    use FooTrait;
 
-	use FooTrait,
-		DeprecatedFooTrait;
+    use DeprecatedFooTrait;
 
 }
 
 class Foo3
 {
-
-	use DeprecatedTraitWithDescription;
+    use DeprecatedTraitWithDescription;
 
 }
 
@@ -30,9 +30,8 @@ class Foo3
  */
 class DeprecatedFoo
 {
-
-	use FooTrait;
-	use DeprecatedFooTrait;
+    use FooTrait;
+    use DeprecatedFooTrait;
 
 }
 
@@ -41,8 +40,8 @@ class DeprecatedFoo
  */
 class DeprecatedFoo2
 {
+    use FooTrait;
 
-	use FooTrait,
-		DeprecatedFooTrait;
+    use DeprecatedFooTrait;
 
 }

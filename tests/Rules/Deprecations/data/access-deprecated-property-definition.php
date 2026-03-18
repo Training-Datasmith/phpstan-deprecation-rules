@@ -1,33 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AccessDeprecatedProperty;
 
 trait FooTrait
 {
+    public $fooFromTrait;
 
-	public $fooFromTrait;
-
-	/**
-	 * @deprecated
-	 */
-	public $deprecatedFooFromTrait;
+    /**
+     * @deprecated
+     */
+    public $deprecatedFooFromTrait;
 
 }
 
-class Foo {
+class Foo
+{
+    use FooTrait;
 
-	use FooTrait;
+    public $foo;
 
-	public $foo;
+    /**
+     * @deprecated
+     */
+    public $deprecatedFoo;
 
-	/**
-	 * @deprecated
-	 */
-	public $deprecatedFoo;
-
-	/**
-	 * @deprecated Use something else instead.
-	 */
-	public $deprecatedWithDescription;
+    /**
+     * @deprecated Use something else instead.
+     */
+    public $deprecatedWithDescription;
 
 }

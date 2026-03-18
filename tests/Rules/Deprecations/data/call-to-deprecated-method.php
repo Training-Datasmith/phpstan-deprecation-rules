@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CheckDeprecatedMethodCall;
 
 $foo = new Foo();
@@ -19,16 +21,16 @@ $foo->deprecatedWithDescription();
  */
 function deprecated_scope()
 {
-	$foo = new Foo();
-	$foo->foo();
-	$foo->deprecatedFoo();
+    $foo = new Foo();
+    $foo->foo();
+    $foo->deprecatedFoo();
 
-	$bar = new Bar();
-	$bar->deprecatedFoo();
-	$bar->deprecatedFoo2();
+    $bar = new Bar();
+    $bar->deprecatedFoo();
+    $bar->deprecatedFoo2();
 
-	$foo->fooFromTrait();
-	$foo->deprecatedFooFromTrait();
+    $foo->fooFromTrait();
+    $foo->deprecatedFooFromTrait();
 
 }
 
@@ -37,40 +39,38 @@ function deprecated_scope()
  */
 class DeprecatedScope
 {
+    public function foo()
+    {
+        $foo = new Foo();
+        $foo->foo();
+        $foo->deprecatedFoo();
 
-	public function foo()
-	{
-		$foo = new Foo();
-		$foo->foo();
-		$foo->deprecatedFoo();
+        $bar = new Bar();
+        $bar->deprecatedFoo();
+        $bar->deprecatedFoo2();
 
-		$bar = new Bar();
-		$bar->deprecatedFoo();
-		$bar->deprecatedFoo2();
-
-		$foo->fooFromTrait();
-		$foo->deprecatedFooFromTrait();
-	}
+        $foo->fooFromTrait();
+        $foo->deprecatedFooFromTrait();
+    }
 
 }
 
-
 final class UsingDeprecatedMethodFromTrait extends MethodMovedToTraitClass
 {
-	use TraitCallingDeprecatedMethod;
+    use TraitCallingDeprecatedMethod;
 
-	public function callProphesize(): void
-	{
-		$this->prophesize();
-	}
+    public function callProphesize(): void
+    {
+        $this->prophesize();
+    }
 }
 
 final class UsingTraitReplacementForDeprecatedMethod extends MethodMovedToTraitClass
 {
-	use TraitReplacingDeprecatedMethod;
+    use TraitReplacingDeprecatedMethod;
 
-	public function callProphesize(): void
-	{
-		$this->prophesize();
-	}
+    public function callProphesize(): void
+    {
+        $this->prophesize();
+    }
 }

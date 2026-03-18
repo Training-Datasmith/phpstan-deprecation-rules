@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UsageOfDeprecatedTrait;
 
 trait FooTrait
 {
-
 }
 
 /**
@@ -12,7 +13,6 @@ trait FooTrait
  */
 trait DeprecatedFooTrait
 {
-
 }
 
 /**
@@ -20,5 +20,4 @@ trait DeprecatedFooTrait
  */
 trait DeprecatedTraitWithDescription
 {
-
 }

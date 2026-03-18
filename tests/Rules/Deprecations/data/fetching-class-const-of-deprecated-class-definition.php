@@ -1,21 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FetchingClassConstOfDeprecatedClass;
 
 class Foo
 {
+    public const FOO = 'FOO';
 
-	public const FOO = 'FOO';
+    /**
+     * @deprecated
+     */
+    public const DEPRECATED_FOO = 'FOO';
 
-	/**
-	 * @deprecated
-	 */
-	public const DEPRECATED_FOO = 'FOO';
-
-	/**
-	 * @deprecated Use different constant.
-	 */
-	public const DEPRECATED_WITH_DESCRIPTION = 'BAR';
+    /**
+     * @deprecated Use different constant.
+     */
+    public const DEPRECATED_WITH_DESCRIPTION = 'BAR';
 
 }
 
@@ -24,13 +25,12 @@ class Foo
  */
 class DeprecatedFoo
 {
+    public const FOO = 'FOO';
 
-	public const FOO = 'FOO';
-
-	/**
-	 * @deprecated
-	 */
-	public const DEPRECATED_FOO = 'FOO';
+    /**
+     * @deprecated
+     */
+    public const DEPRECATED_FOO = 'FOO';
 
 }
 
@@ -39,7 +39,6 @@ class DeprecatedFoo
  */
 class DeprecatedBar
 {
-
-	public const FOO = 'FOO';
+    public const FOO = 'FOO';
 
 }

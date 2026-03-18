@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AccessDeprecatedProperty;
 
 $foo = new Foo();
@@ -23,19 +25,19 @@ $foo->deprecatedWithDescription;
  */
 function deprecated_scope()
 {
-	$foo = new Foo();
+    $foo = new Foo();
 
-	$foo->foo = 'foo';
-	$foo->foo;
+    $foo->foo = 'foo';
+    $foo->foo;
 
-	$foo->deprecatedFoo = 'deprecatedFoo';
-	$foo->deprecatedFoo;
+    $foo->deprecatedFoo = 'deprecatedFoo';
+    $foo->deprecatedFoo;
 
-	$foo->fooFromTrait = 'fooFromTrait';
-	$foo->fooFromTrait;
+    $foo->fooFromTrait = 'fooFromTrait';
+    $foo->fooFromTrait;
 
-	$foo->deprecatedFooFromTrait = 'deprecatedFooFromTrait';
-	$foo->deprecatedFooFromTrait;
+    $foo->deprecatedFooFromTrait = 'deprecatedFooFromTrait';
+    $foo->deprecatedFooFromTrait;
 }
 
 /**
@@ -43,22 +45,21 @@ function deprecated_scope()
  */
 class DeprecatedScope
 {
+    public function foo()
+    {
+        $foo = new Foo();
 
-	public function foo()
-	{
-		$foo = new Foo();
+        $foo->foo = 'foo';
+        $foo->foo;
 
-		$foo->foo = 'foo';
-		$foo->foo;
+        $foo->deprecatedFoo = 'deprecatedFoo';
+        $foo->deprecatedFoo;
 
-		$foo->deprecatedFoo = 'deprecatedFoo';
-		$foo->deprecatedFoo;
+        $foo->fooFromTrait = 'fooFromTrait';
+        $foo->fooFromTrait;
 
-		$foo->fooFromTrait = 'fooFromTrait';
-		$foo->fooFromTrait;
-
-		$foo->deprecatedFooFromTrait = 'deprecatedFooFromTrait';
-		$foo->deprecatedFooFromTrait;
-	}
+        $foo->deprecatedFooFromTrait = 'deprecatedFooFromTrait';
+        $foo->deprecatedFooFromTrait;
+    }
 
 }

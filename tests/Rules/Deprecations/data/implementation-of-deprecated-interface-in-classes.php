@@ -1,25 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ImplementationOfDeprecatedInterface;
 
 class Foo implements Fooable
 {
-
 }
 
 class Foo2 implements DeprecatedFooable
 {
-
 }
 
 class Foo3 implements Fooable, DeprecatedFooable, DeprecatedFooable2
 {
-
 }
 
 class Foo4 implements DeprecatedWithDescription
 {
-
 }
 
 /**
@@ -27,7 +25,6 @@ class Foo4 implements DeprecatedWithDescription
  */
 class DeprecatedFoo implements Fooable
 {
-
 }
 
 /**
@@ -35,7 +32,6 @@ class DeprecatedFoo implements Fooable
  */
 class DeprecatedFoo2 implements DeprecatedFooable
 {
-
 }
 
 /**
@@ -43,5 +39,4 @@ class DeprecatedFoo2 implements DeprecatedFooable
  */
 class DeprecatedFoo3 implements Fooable, DeprecatedFooable, DeprecatedFooable2
 {
-
 }

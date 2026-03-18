@@ -1,96 +1,94 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CheckDeprecatedMethodCall;
 
 trait FooTrait
 {
+    public function fooFromTrait()
+    {
 
-	public function fooFromTrait()
-	{
+    }
 
-	}
+    /**
+     * @deprecated
+     */
+    public function deprecatedFooFromTrait()
+    {
 
-	/**
-	 * @deprecated
-	 */
-	public function deprecatedFooFromTrait()
-	{
-
-	}
+    }
 
 }
 
 class Foo
 {
+    use FooTrait;
 
-	use FooTrait;
+    public function foo()
+    {
 
-	public function foo()
-	{
+    }
 
-	}
+    /**
+     * @deprecated
+     */
+    public function deprecatedFoo()
+    {
 
-	/**
-	 * @deprecated
-	 */
-	public function deprecatedFoo()
-	{
+    }
 
-	}
+    /**
+     * @deprecated
+     */
+    public function deprecatedFoo2()
+    {
 
-	/**
-	 * @deprecated
-	 */
-	public function deprecatedFoo2()
-	{
+    }
 
-	}
+    /**
+     * @deprecated Call a different method instead.
+     */
+    public function deprecatedWithDescription()
+    {
 
-	/**
-	 * @deprecated Call a different method instead.
-	 */
-	public function deprecatedWithDescription()
-	{
-
-	}
+    }
 
 }
 
 class Bar extends Foo
 {
+    public function deprecatedFoo()
+    {
 
-	public function deprecatedFoo()
-	{
-
-	}
+    }
 
 }
 
 abstract class MethodMovedToTraitClass
 {
-	/** @deprecated Use TraitReplacingDeprecatedMethod::prophesize() */
-	protected function prophesize(): void
-	{
-		echo 'Base';
-	}
+    /** @deprecated Use TraitReplacingDeprecatedMethod::prophesize() */
+    protected function prophesize(): void
+    {
+        echo 'Base';
+    }
 }
 
 trait TraitCallingDeprecatedMethod
 {
-	protected function prophesize(): void
-	{
-		echo 'Trait';
-	}
+    protected function prophesize(): void
+    {
+        echo 'Trait';
+    }
 }
 
 trait TraitReplacingDeprecatedMethod
 {
-	/**
-	 * @not-deprecated
-	 */
-	protected function prophesize(): void
-	{
-		echo 'Trait';
-	}
+    /**
+     * @not-deprecated
+     */
+    protected function prophesize(): void
+    {
+        echo 'Trait';
+    }
 }
-
