@@ -1,117 +1,47 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Php_Stan\Rules\Deprecations;
 
-namespace PHPStan\Rules\Deprecations;
-
-use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\ExtendedMethodReflection;
-use PHPStan\Rules\RestrictedUsage\RestrictedMethodUsageExtension;
-use PHPStan\Rules\RestrictedUsage\RestrictedUsage;
-
+use Php_Stan\Analyser\Scope;
+use Php_Stan\Reflection\Extended_Method_Reflection;
+use Php_Stan\Rules\Restricted_Usage\Restricted_Method_Usage_Extension;
+use Php_Stan\Rules\Restricted_Usage\Restricted_Usage;
 use function sprintf;
 use function strtolower;
-
-class RestrictedDeprecatedMethodUsageExtension implements RestrictedMethodUsageExtension
+class Restricted_Deprecated_Method_Usage_Extension implements Restricted_Method_Usage_Extension
 {
-    private DeprecatedScopeHelper $deprecatedScopeHelper;
-
-    public function __construct(DeprecatedScopeHelper $deprecatedScopeHelper)
+    private Deprecated_Scope_Helper $deprecated_scope_helper;
+    public function __construct(Deprecated_Scope_Helper $deprecated_scope_helper)
     {
-        $this->deprecatedScopeHelper = $deprecatedScopeHelper;
+        $this->deprecated_scope_helper = $deprecated_scope_helper;
     }
-
-    public function isRestrictedMethodUsage(
-        ExtendedMethodReflection $methodReflection,
-        Scope $scope
-    ): ?RestrictedUsage {
-        if ($this->deprecatedScopeHelper->isScopeDeprecated($scope)) {
+    public function is_restricted_method_usage(Extended_Method_Reflection $method_reflection, Scope $scope): ?Restricted_Usage
+    {
+        if ($this->deprecated_scope_helper->is_scope_deprecated($scope)) {
             return null;
         }
-
-        if ($methodReflection->getDeclaringClass()->isDeprecated()) {
-            $class = $methodReflection->getDeclaringClass();
-            $classDescription = $class->getDeprecatedDescription();
-            if ($classDescription === null) {
-                return RestrictedUsage::create(
-                    sprintf(
-                        'Call to method %s() of deprecated %s %s.',
-                        $methodReflection->getName(),
-                        strtolower($methodReflection->getDeclaringClass()->getClassTypeDescription()),
-                        $methodReflection->getDeclaringClass()->getName(),
-                    ),
-                    sprintf(
-                        '%s.deprecated%s',
-                        $methodReflection->isStatic() ? 'staticMethod' : 'method',
-                        $methodReflection->getDeclaringClass()->getClassTypeDescription(),
-                    ),
-                );
+        if ($method_reflection->get_declaring_class()->is_deprecated()) {
+            $class = $method_reflection->get_declaring_class();
+            $class_description = $class->get_deprecated_description();
+            if ($class_description === null) {
+                return Restricted_Usage::create(sprintf('Call to method %s() of deprecated %s %s.', $method_reflection->get_name(), strtolower($method_reflection->get_declaring_class()->get_class_type_description()), $method_reflection->get_declaring_class()->get_name()), sprintf('%s.deprecated%s', $method_reflection->is_static() ? 'staticMethod' : 'method', $method_reflection->get_declaring_class()->get_class_type_description()));
             }
-
-            return RestrictedUsage::create(
-                sprintf(
-                    "Call to method %s() of deprecated %s %s:\n%s",
-                    $methodReflection->getName(),
-                    strtolower($methodReflection->getDeclaringClass()->getClassTypeDescription()),
-                    $methodReflection->getDeclaringClass()->getName(),
-                    $classDescription,
-                ),
-                sprintf(
-                    '%s.deprecated%s',
-                    $methodReflection->isStatic() ? 'staticMethod' : 'method',
-                    $methodReflection->getDeclaringClass()->getClassTypeDescription(),
-                ),
-            );
+            return Restricted_Usage::create(sprintf("Call to method %s() of deprecated %s %s:\n%s", $method_reflection->get_name(), strtolower($method_reflection->get_declaring_class()->get_class_type_description()), $method_reflection->get_declaring_class()->get_name(), $class_description), sprintf('%s.deprecated%s', $method_reflection->is_static() ? 'staticMethod' : 'method', $method_reflection->get_declaring_class()->get_class_type_description()));
         }
-
-        if (!$methodReflection->isDeprecated()->yes()) {
+        if (!$method_reflection->is_deprecated()->yes()) {
             return null;
         }
-
-        $description = $methodReflection->getDeprecatedDescription();
-        if (strtolower($methodReflection->getName()) === '__tostring') {
+        $description = $method_reflection->get_deprecated_description();
+        if (strtolower($method_reflection->get_name()) === '__tostring') {
             if ($description === null) {
-                return RestrictedUsage::create(
-                    sprintf(
-                        'Casting class %s to string is deprecated.',
-                        $methodReflection->getDeclaringClass()->getName(),
-                    ),
-                    'class.toStringDeprecated',
-                );
+                return Restricted_Usage::create(sprintf('Casting class %s to string is deprecated.', $method_reflection->get_declaring_class()->get_name()), 'class.toStringDeprecated');
             }
-
-            return RestrictedUsage::create(
-                sprintf(
-                    "Casting class %s to string is deprecated.:\n%s",
-                    $methodReflection->getDeclaringClass()->getName(),
-                    $description,
-                ),
-                'class.toStringDeprecated',
-            );
+            return Restricted_Usage::create(sprintf("Casting class %s to string is deprecated.:\n%s", $method_reflection->get_declaring_class()->get_name(), $description), 'class.toStringDeprecated');
         }
-
         if ($description === null) {
-            return RestrictedUsage::create(
-                sprintf(
-                    'Call to deprecated method %s() of %s %s.',
-                    $methodReflection->getName(),
-                    strtolower($methodReflection->getDeclaringClass()->getClassTypeDescription()),
-                    $methodReflection->getDeclaringClass()->getName(),
-                ),
-                sprintf('%s.deprecated', $methodReflection->isStatic() ? 'staticMethod' : 'method'),
-            );
+            return Restricted_Usage::create(sprintf('Call to deprecated method %s() of %s %s.', $method_reflection->get_name(), strtolower($method_reflection->get_declaring_class()->get_class_type_description()), $method_reflection->get_declaring_class()->get_name()), sprintf('%s.deprecated', $method_reflection->is_static() ? 'staticMethod' : 'method'));
         }
-
-        return RestrictedUsage::create(
-            sprintf(
-                "Call to deprecated method %s() of %s %s:\n%s",
-                $methodReflection->getName(),
-                strtolower($methodReflection->getDeclaringClass()->getClassTypeDescription()),
-                $methodReflection->getDeclaringClass()->getName(),
-                $description,
-            ),
-            sprintf('%s.deprecated', $methodReflection->isStatic() ? 'staticMethod' : 'method'),
-        );
+        return Restricted_Usage::create(sprintf("Call to deprecated method %s() of %s %s:\n%s", $method_reflection->get_name(), strtolower($method_reflection->get_declaring_class()->get_class_type_description()), $method_reflection->get_declaring_class()->get_name(), $description), sprintf('%s.deprecated', $method_reflection->is_static() ? 'staticMethod' : 'method'));
     }
-
 }

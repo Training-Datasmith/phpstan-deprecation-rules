@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Php_Stan\Rules\Deprecations;
 
-namespace PHPStan\Rules\Deprecations;
-
-use PHPStan\Analyser\Scope;
-
+use Php_Stan\Analyser\Scope;
 /**
  * This is the interface for custom deprecated scope resolvers.
  *
@@ -21,8 +19,7 @@ use PHPStan\Analyser\Scope;
  *
  * @api
  */
-interface DeprecatedScopeResolver
+interface Deprecated_Scope_Resolver
 {
-    public function isScopeDeprecated(Scope $scope): bool;
-
+    public function is_scope_deprecated(Scope $scope): bool;
 }

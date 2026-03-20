@@ -1,32 +1,23 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Php_Stan\Dependency_Injection;
 
-namespace PHPStan\DependencyInjection;
-
-use PHPStan\Rules\Deprecations\DeprecatedScopeHelper;
-
-final class LazyDeprecatedScopeResolverProvider
+use Php_Stan\Rules\Deprecations\Deprecated_Scope_Helper;
+final class Lazy_Deprecated_Scope_Resolver_Provider
 {
     public const EXTENSION_TAG = 'phpstan.deprecations.deprecatedScopeResolver';
-
     private Container $container;
-
-    private ?DeprecatedScopeHelper $scopeHelper = null;
-
+    private ?Deprecated_Scope_Helper $scope_helper = null;
     public function __construct(Container $container)
     {
         $this->container = $container;
     }
-
-    public function get(): DeprecatedScopeHelper
+    public function get(): Deprecated_Scope_Helper
     {
-        if ($this->scopeHelper === null) {
-            $this->scopeHelper = new DeprecatedScopeHelper(
-                $this->container->getServicesByTag(self::EXTENSION_TAG),
-            );
+        if ($this->scope_helper === null) {
+            $this->scope_helper = new Deprecated_Scope_Helper($this->container->get_services_by_tag(self::EXTENSION_TAG));
         }
-        return $this->scopeHelper;
+        return $this->scope_helper;
     }
-
 }

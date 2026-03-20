@@ -1,16 +1,13 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Php_Stan\Rules\Deprecations;
 
-namespace PHPStan\Rules\Deprecations;
-
-use PHPStan\Analyser\Scope;
-
-class DeprecatedScopeHelper
+use Php_Stan\Analyser\Scope;
+class Deprecated_Scope_Helper
 {
     /** @var DeprecatedScopeResolver[]  */
     private array $resolvers;
-
     /**
      * @param DeprecatedScopeResolver[] $checkers
      */
@@ -18,16 +15,13 @@ class DeprecatedScopeHelper
     {
         $this->resolvers = $checkers;
     }
-
-    public function isScopeDeprecated(Scope $scope): bool
+    public function is_scope_deprecated(Scope $scope): bool
     {
         foreach ($this->resolvers as $checker) {
-            if ($checker->isScopeDeprecated($scope)) {
+            if ($checker->is_scope_deprecated($scope)) {
                 return true;
             }
         }
-
         return false;
     }
-
 }

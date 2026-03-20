@@ -1,31 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Php_Stan\Rules\Deprecations;
 
-namespace PHPStan\Rules\Deprecations;
-
-use PHPStan\Analyser\Scope;
-
-final class DefaultDeprecatedScopeResolver implements DeprecatedScopeResolver
+use Php_Stan\Analyser\Scope;
+final class Default_Deprecated_Scope_Resolver implements Deprecated_Scope_Resolver
 {
-    public function isScopeDeprecated(Scope $scope): bool
+    public function is_scope_deprecated(Scope $scope): bool
     {
-        $class = $scope->getClassReflection();
-        if ($class !== null && $class->isDeprecated()) {
+        $class = $scope->get_class_reflection();
+        if ($class !== null && $class->is_deprecated()) {
             return true;
         }
-
-        $trait = $scope->getTraitReflection();
-        if ($trait !== null && $trait->isDeprecated()) {
+        $trait = $scope->get_trait_reflection();
+        if ($trait !== null && $trait->is_deprecated()) {
             return true;
         }
-
-        $function = $scope->getFunction();
-        if ($function !== null && $function->isDeprecated()->yes()) {
+        $function = $scope->get_function();
+        if ($function !== null && $function->is_deprecated()->yes()) {
             return true;
         }
-
         return false;
     }
-
 }

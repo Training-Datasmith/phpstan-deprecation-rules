@@ -1,141 +1,103 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Php_Stan\Rules\Deprecations;
 
-namespace PHPStan\Rules\Deprecations;
-
-use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\ReflectionProvider;
-use PHPStan\Rules\ClassNameUsageLocation;
-use PHPStan\Rules\RestrictedUsage\RestrictedClassNameUsageExtension;
-use PHPStan\Rules\RestrictedUsage\RestrictedUsage;
-
+use Php_Stan\Analyser\Scope;
+use Php_Stan\Reflection\Class_Reflection;
+use Php_Stan\Reflection\Reflection_Provider;
+use Php_Stan\Rules\Class_Name_Usage_Location;
+use Php_Stan\Rules\Restricted_Usage\Restricted_Class_Name_Usage_Extension;
+use Php_Stan\Rules\Restricted_Usage\Restricted_Usage;
 use function rtrim;
 use function sprintf;
 use function strtolower;
-
-class RestrictedDeprecatedClassNameUsageExtension implements RestrictedClassNameUsageExtension
+class Restricted_Deprecated_Class_Name_Usage_Extension implements Restricted_Class_Name_Usage_Extension
 {
-    private DeprecatedScopeHelper $deprecatedScopeHelper;
-
-    private ReflectionProvider $reflectionProvider;
-
-    private bool $bleedingEdge;
-
-    public function __construct(
-        DeprecatedScopeHelper $deprecatedScopeHelper,
-        ReflectionProvider $reflectionProvider,
-        bool $bleedingEdge
-    ) {
-        $this->deprecatedScopeHelper = $deprecatedScopeHelper;
-        $this->reflectionProvider = $reflectionProvider;
-        $this->bleedingEdge = $bleedingEdge;
-    }
-
-    public function isRestrictedClassNameUsage(
-        ClassReflection $classReflection,
-        Scope $scope,
-        ClassNameUsageLocation $location
-    ): ?RestrictedUsage {
-        if (!$classReflection->isDeprecated()) {
-            return null;
-        }
-
-        if ($this->deprecatedScopeHelper->isScopeDeprecated($scope)) {
-            return null;
-        }
-
-        $currentClassName = $location->getCurrentClassName();
-        if ($currentClassName !== null && $this->reflectionProvider->hasClass($currentClassName)) {
-            $currentClassReflection = $this->reflectionProvider->getClass($currentClassName);
-            if ($currentClassReflection->isDeprecated()) {
-                return null;
-            }
-        }
-
-        $identifierPart = sprintf('deprecated%s', $classReflection->getClassTypeDescription());
-        $defaultUsage = RestrictedUsage::create(
-            $this->addClassDescriptionToMessage($classReflection, $location->createMessage(
-                sprintf('deprecated %s %s', strtolower($classReflection->getClassTypeDescription()), $classReflection->getDisplayName()),
-            )),
-            $location->createIdentifier($identifierPart),
-        );
-
-        if ($location->value === ClassNameUsageLocation::CLASS_IMPLEMENTS) {
-            return $defaultUsage;
-        }
-
-        if ($location->value === ClassNameUsageLocation::CLASS_EXTENDS) {
-            return $defaultUsage;
-        }
-
-        if ($location->value === ClassNameUsageLocation::INTERFACE_EXTENDS) {
-            return $defaultUsage;
-        }
-
-        if ($location->value === ClassNameUsageLocation::INSTANTIATION) {
-            return $defaultUsage;
-        }
-
-        if ($location->value === ClassNameUsageLocation::TRAIT_USE) {
-            return $defaultUsage;
-        }
-
-        if ($location->value === ClassNameUsageLocation::STATIC_METHOD_CALL) {
-            $method = $location->getMethod();
-            if ($method === null) {
-                return $defaultUsage;
-            }
-            if ($method->isDeprecated()->yes() || $method->getDeclaringClass()->isDeprecated()) {
-                return null;
-            }
-
-            return $defaultUsage;
-        }
-
-        if ($location->value === ClassNameUsageLocation::STATIC_PROPERTY_ACCESS) {
-            $property = $location->getProperty();
-            if ($property === null) {
-                return $defaultUsage;
-            }
-            if ($property->isDeprecated()->yes() || $property->getDeclaringClass()->isDeprecated()) {
-                return null;
-            }
-
-            return $defaultUsage;
-        }
-
-        if ($location->value === ClassNameUsageLocation::CLASS_CONSTANT_ACCESS) {
-            $constant = $location->getClassConstant();
-            if ($constant === null) {
-                return $defaultUsage;
-            }
-            if ($constant->isDeprecated()->yes() || $constant->getDeclaringClass()->isDeprecated()) {
-                return null;
-            }
-
-            return $defaultUsage;
-        }
-
-        if ($location->value === ClassNameUsageLocation::PARAMETER_TYPE || $location->value === ClassNameUsageLocation::RETURN_TYPE) {
-            return $defaultUsage;
-        }
-
-        if (!$this->bleedingEdge) {
-            return null;
-        }
-
-        return $defaultUsage;
-    }
-
-    private function addClassDescriptionToMessage(ClassReflection $classReflection, string $message): string
+    private Deprecated_Scope_Helper $deprecated_scope_helper;
+    private Reflection_Provider $reflection_provider;
+    private bool $bleeding_edge;
+    public function __construct(Deprecated_Scope_Helper $deprecated_scope_helper, Reflection_Provider $reflection_provider, bool $bleeding_edge)
     {
-        if ($classReflection->getDeprecatedDescription() === null) {
+        $this->deprecated_scope_helper = $deprecated_scope_helper;
+        $this->reflection_provider = $reflection_provider;
+        $this->bleeding_edge = $bleeding_edge;
+    }
+    public function is_restricted_class_name_usage(Class_Reflection $class_reflection, Scope $scope, Class_Name_Usage_Location $location): ?Restricted_Usage
+    {
+        if (!$class_reflection->is_deprecated()) {
+            return null;
+        }
+        if ($this->deprecated_scope_helper->is_scope_deprecated($scope)) {
+            return null;
+        }
+        $current_class_name = $location->get_current_class_name();
+        if ($current_class_name !== null && $this->reflection_provider->has_class($current_class_name)) {
+            $current_class_reflection = $this->reflection_provider->get_class($current_class_name);
+            if ($current_class_reflection->is_deprecated()) {
+                return null;
+            }
+        }
+        $identifier_part = sprintf('deprecated%s', $class_reflection->get_class_type_description());
+        $default_usage = Restricted_Usage::create($this->add_class_description_to_message($class_reflection, $location->create_message(sprintf('deprecated %s %s', strtolower($class_reflection->get_class_type_description()), $class_reflection->get_display_name()))), $location->create_identifier($identifier_part));
+        if ($location->value === Class_Name_Usage_Location::CLASS_IMPLEMENTS) {
+            return $default_usage;
+        }
+        if ($location->value === Class_Name_Usage_Location::CLASS_EXTENDS) {
+            return $default_usage;
+        }
+        if ($location->value === Class_Name_Usage_Location::INTERFACE_EXTENDS) {
+            return $default_usage;
+        }
+        if ($location->value === Class_Name_Usage_Location::INSTANTIATION) {
+            return $default_usage;
+        }
+        if ($location->value === Class_Name_Usage_Location::TRAIT_USE) {
+            return $default_usage;
+        }
+        if ($location->value === Class_Name_Usage_Location::STATIC_METHOD_CALL) {
+            $method = $location->get_method();
+            if ($method === null) {
+                return $default_usage;
+            }
+            if ($method->is_deprecated()->yes() || $method->get_declaring_class()->is_deprecated()) {
+                return null;
+            }
+            return $default_usage;
+        }
+        if ($location->value === Class_Name_Usage_Location::STATIC_PROPERTY_ACCESS) {
+            $property = $location->get_property();
+            if ($property === null) {
+                return $default_usage;
+            }
+            if ($property->is_deprecated()->yes() || $property->get_declaring_class()->is_deprecated()) {
+                return null;
+            }
+            return $default_usage;
+        }
+        if ($location->value === Class_Name_Usage_Location::CLASS_CONSTANT_ACCESS) {
+            $constant = $location->get_class_constant();
+            if ($constant === null) {
+                return $default_usage;
+            }
+            if ($constant->is_deprecated()->yes() || $constant->get_declaring_class()->is_deprecated()) {
+                return null;
+            }
+            return $default_usage;
+        }
+        if ($location->value === Class_Name_Usage_Location::PARAMETER_TYPE || $location->value === Class_Name_Usage_Location::RETURN_TYPE) {
+            return $default_usage;
+        }
+        if (!$this->bleeding_edge) {
+            return null;
+        }
+        return $default_usage;
+    }
+    private function add_class_description_to_message(Class_Reflection $class_reflection, string $message): string
+    {
+        if ($class_reflection->get_deprecated_description() === null) {
             return $message;
         }
-
-        return rtrim($message, '.') . ":\n" . $classReflection->getDeprecatedDescription();
+        return rtrim($message, '.') . ":\n" . $class_reflection->get_deprecated_description();
     }
-
 }
