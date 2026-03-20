@@ -17,12 +17,38 @@ class Restricted_Deprecated_Class_Name_Usage_Extension implements Restricted_Cla
     private Deprecated_Scope_Helper $deprecated_scope_helper;
     private Reflection_Provider $reflection_provider;
     private bool $bleeding_edge;
+
+    /**
+     * @param Deprecated_Scope_Helper $deprecated_scope_helper Helper to determine if the current scope is deprecated
+     * @param Reflection_Provider     $reflection_provider     PHPStan reflection provider for resolving class metadata
+     * @param bool                    $bleeding_edge           Whether bleeding-edge checks (broader coverage) are enabled
+     */
     public function __construct(Deprecated_Scope_Helper $deprecated_scope_helper, Reflection_Provider $reflection_provider, bool $bleeding_edge)
     {
         $this->deprecated_scope_helper = $deprecated_scope_helper;
         $this->reflection_provider = $reflection_provider;
         $this->bleeding_edge = $bleeding_edge;
     }
+
+    /**
+     * Checks whether a class name reference should be reported as a deprecated usage.
+     *
+     * Evaluates the given class reference in context of the usage location (instantiation,
+     * extends, implements, trait use, static method call, static property access, constant
+     * access, or type hint). Returns null (no error) when:
+     * - The class is not deprecated
+     * - The calling scope is itself deprecated
+     * - The specific member being accessed (method/property/constant) is also deprecated,
+     *   meaning this is already covered by a more specific rule
+     *
+     * In bleeding-edge mode, additional usage locations beyond type hints are checked.
+     *
+     * @param Class_Reflection          $class_reflection Reflection of the class being referenced
+     * @param Scope                     $scope            The analysis scope of the reference site
+     * @param Class_Name_Usage_Location $location         The kind of usage (instantiation, extends, etc.)
+     *
+     * @return Restricted_Usage|null Violation descriptor with message and identifier, or null if allowed
+     */
     public function is_restricted_class_name_usage(Class_Reflection $class_reflection, Scope $scope, Class_Name_Usage_Location $location): ?Restricted_Usage
     {
         if (!$class_reflection->is_deprecated()) {
@@ -93,6 +119,14 @@ class Restricted_Deprecated_Class_Name_Usage_Extension implements Restricted_Cla
         }
         return $default_usage;
     }
+    /**
+     * Appends the class's own deprecation description to a message if one is present.
+     *
+     * @param Class_Reflection $class_reflection The deprecated class whose description to include
+     * @param string           $message          The base error message to potentially augment
+     *
+     * @return string The original message, or the message with the deprecation description appended
+     */
     private function add_class_description_to_message(Class_Reflection $class_reflection, string $message): string
     {
         if ($class_reflection->get_deprecated_description() === null) {

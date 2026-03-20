@@ -49,16 +49,42 @@ class Call_With_Deprecated_Ini_Option_Rule implements Rule
     private Reflection_Provider $reflection_provider;
     private Deprecated_Scope_Helper $deprecated_scope_helper;
     private Php_Version $php_version;
+    /**
+     * @param Reflection_Provider     $reflection_provider     PHPStan's reflection provider for resolving function names
+     * @param Deprecated_Scope_Helper $deprecated_scope_helper Helper to skip reporting when current scope is deprecated
+     * @param Php_Version             $php_version             The configured PHP version, used to filter version-gated deprecations
+     */
     public function __construct(Reflection_Provider $reflection_provider, Deprecated_Scope_Helper $deprecated_scope_helper, Php_Version $php_version)
     {
         $this->reflection_provider = $reflection_provider;
         $this->deprecated_scope_helper = $deprecated_scope_helper;
         $this->php_version = $php_version;
     }
+
+    /**
+     * Returns the AST node type this rule applies to.
+     *
+     * @return class-string<FuncCall> Fully qualified class name of the node type
+     */
     public function get_node_type(): string
     {
         return Func_Call::class;
     }
+
+    /**
+     * Analyzes a function call and reports if a deprecated INI option name is passed.
+     *
+     * Checks calls to ini_get(), ini_set(), ini_alter(), ini_restore(), and get_cfg_var()
+     * for known deprecated option names. The deprecation is only reported when the current
+     * PHP version meets or exceeds the version when the option was deprecated.
+     *
+     * @param Node  $node  The function call AST node being analyzed
+     * @param Scope $scope The current analysis scope
+     *
+     * @return \PHPStan\Rules\RuleError[] Array of errors; empty if no violation found
+     *
+     * @complexity O(n) where n is the number of constant string types of the first argument
+     */
     public function process_node(Node $node, Scope $scope): array
     {
         if ($this->deprecated_scope_helper->is_scope_deprecated($scope)) {

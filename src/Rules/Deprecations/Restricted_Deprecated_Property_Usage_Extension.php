@@ -12,10 +12,27 @@ use function strtolower;
 class Restricted_Deprecated_Property_Usage_Extension implements Restricted_Property_Usage_Extension
 {
     private Deprecated_Scope_Helper $deprecated_scope_helper;
+
+    /**
+     * @param Deprecated_Scope_Helper $deprecated_scope_helper Helper to determine if the current scope is itself deprecated
+     */
     public function __construct(Deprecated_Scope_Helper $deprecated_scope_helper)
     {
         $this->deprecated_scope_helper = $deprecated_scope_helper;
     }
+
+    /**
+     * Checks whether a property access should be reported as a restricted (deprecated) usage.
+     *
+     * Handles two cases: the declaring class is deprecated (property on deprecated class),
+     * or the property itself is deprecated. In either case, returns null when inside a
+     * deprecated scope. Produces messages that distinguish static vs instance properties.
+     *
+     * @param Extended_Property_Reflection $property_reflection Reflection of the property being accessed
+     * @param Scope                        $scope               The analysis scope of the access site
+     *
+     * @return Restricted_Usage|null Violation descriptor, or null if no violation
+     */
     public function is_restricted_property_usage(Extended_Property_Reflection $property_reflection, Scope $scope): ?Restricted_Usage
     {
         if ($this->deprecated_scope_helper->is_scope_deprecated($scope)) {

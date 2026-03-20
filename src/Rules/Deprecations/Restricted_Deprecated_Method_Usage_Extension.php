@@ -12,10 +12,33 @@ use function strtolower;
 class Restricted_Deprecated_Method_Usage_Extension implements Restricted_Method_Usage_Extension
 {
     private Deprecated_Scope_Helper $deprecated_scope_helper;
+
+    /**
+     * @param Deprecated_Scope_Helper $deprecated_scope_helper Determines whether the calling scope is itself deprecated
+     */
     public function __construct(Deprecated_Scope_Helper $deprecated_scope_helper)
     {
         $this->deprecated_scope_helper = $deprecated_scope_helper;
     }
+
+    /**
+     * Checks whether a method call should be reported as a restricted (deprecated) usage.
+     *
+     * Returns null if the call is allowed (either scope is deprecated, or the method/class
+     * is not deprecated). Returns a {@see Restricted_Usage} descriptor when a violation is
+     * detected, containing a human-readable message and an error identifier.
+     *
+     * Handles two distinct cases:
+     * - The declaring class itself is deprecated (method call on deprecated class)
+     * - The specific method is deprecated (direct method deprecation)
+     *
+     * Special handling for `__toString` produces a "casting to string is deprecated" message.
+     *
+     * @param Extended_Method_Reflection $method_reflection Reflection of the method being called
+     * @param Scope                      $scope             The analysis scope of the call site
+     *
+     * @return Restricted_Usage|null Violation descriptor, or null if no violation
+     */
     public function is_restricted_method_usage(Extended_Method_Reflection $method_reflection, Scope $scope): ?Restricted_Usage
     {
         if ($this->deprecated_scope_helper->is_scope_deprecated($scope)) {

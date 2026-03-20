@@ -6,6 +6,19 @@ namespace Php_Stan\Rules\Deprecations;
 use Php_Stan\Analyser\Scope;
 final class Default_Deprecated_Scope_Resolver implements Deprecated_Scope_Resolver
 {
+    /**
+     * Determines whether the current analysis scope is itself deprecated.
+     *
+     * A scope is considered deprecated when it belongs to a deprecated class,
+     * a deprecated trait, or a deprecated function/method. In such contexts,
+     * usages of other deprecated symbols are intentional and should not be reported.
+     *
+     * @param Scope $scope The PHPStan analysis scope to evaluate
+     *
+     * @return bool True if the surrounding code context is deprecated, false otherwise
+     *
+     * @since 1.0
+     */
     public function is_scope_deprecated(Scope $scope): bool
     {
         $class = $scope->get_class_reflection();

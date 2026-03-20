@@ -12,10 +12,27 @@ use function strtolower;
 class Restricted_Deprecated_Class_Constant_Usage_Extension implements Restricted_Class_Constant_Usage_Extension
 {
     private Deprecated_Scope_Helper $deprecated_scope_helper;
+
+    /**
+     * @param Deprecated_Scope_Helper $deprecated_scope_helper Helper to determine if the current scope is itself deprecated
+     */
     public function __construct(Deprecated_Scope_Helper $deprecated_scope_helper)
     {
         $this->deprecated_scope_helper = $deprecated_scope_helper;
     }
+
+    /**
+     * Checks whether a class constant access should be reported as a restricted (deprecated) usage.
+     *
+     * Handles two cases: the declaring class is deprecated (constant on deprecated class),
+     * or the class constant itself is deprecated. Returns null when inside a deprecated scope.
+     * The error message includes the constant's own deprecation description when available.
+     *
+     * @param Class_Constant_Reflection $constant_reflection Reflection of the class constant being accessed
+     * @param Scope                     $scope               The analysis scope of the access site
+     *
+     * @return Restricted_Usage|null Violation descriptor, or null if no violation
+     */
     public function is_restricted_class_constant_usage(Class_Constant_Reflection $constant_reflection, Scope $scope): ?Restricted_Usage
     {
         if ($this->deprecated_scope_helper->is_scope_deprecated($scope)) {
